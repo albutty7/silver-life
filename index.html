@@ -66,23 +66,6 @@ button:hover {
   opacity: 0.95;
 }
 
-.discord-btn,
-.google-btn {
-  width: 100%;
-  display: block;
-  margin: 8px auto;
-}
-
-.discord-btn {
-  background: #7289da;
-}
-
-.google-btn {
-  background: white;
-  color: #202124;
-  border: 1px solid #dadce0;
-}
-
 .note {
   margin-top: 10px;
   font-size: 13px;
@@ -173,12 +156,10 @@ footer.support a {
 <div class="login" id="loginPage">
   <div class="login-box">
     <h2>تسجيل الدخول</h2>
-    <button class="google-btn" onclick="redirectToGoogle()">دخول عبر جوجل</button>
-    <button class="discord-btn" onclick="redirectToDiscord()">دخول عبر ديسكورد</button>
-    <div class="note">اختر أي طريقة تريد، أو سجّل دخولك يدوياً بالأسفل.</div>
     <input type="text" id="user" placeholder="اسم المستخدم">
     <input type="password" id="pass" placeholder="كلمة المرور">
     <button onclick="login()">دخول</button>
+    <div class="note">سجّل دخولك هنا ثم استمتع بالمتجر.</div>
   </div>
 </div>
 
@@ -226,91 +207,11 @@ footer.support a {
 </footer>
 
 <script>
-// استبدل هذه القيم بقيم التطبيق الخاص بك
-const DISCORD_CLIENT_ID = "YOUR_DISCORD_CLIENT_ID";
-const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID";
-const REDIRECT_URI = "https://yourdomain.com/"; // يجب أن يتطابق مع redirect URI المسجل في لوحة التطبيقات
-const DISCORD_SCOPES = "identify%20email";
-const GOOGLE_SCOPES = "openid%20profile%20email";
-
-window.addEventListener("DOMContentLoaded", handleOAuth);
-
-function redirectToDiscord() {
-  if (!DISCORD_CLIENT_ID || DISCORD_CLIENT_ID === "YOUR_DISCORD_CLIENT_ID") {
-    alert("رجاءً ضع client_id لتطبيق ديسكورد في الكود أولاً.");
-    return;
-  }
-  const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=${DISCORD_SCOPES}&state=discord`;
-  window.location.href = authUrl;
-}
-
-function redirectToGoogle() {
-  if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === "YOUR_GOOGLE_CLIENT_ID") {
-    alert("رجاءً ضع client_id لتطبيق جوجل في الكود أولاً.");
-    return;
-  }
-  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=${GOOGLE_SCOPES}&include_granted_scopes=true&state=google`;
-  window.location.href = authUrl;
-}
-
-function handleOAuth() {
-  const hash = window.location.hash.substring(1);
-  const params = new URLSearchParams(hash);
-  const token = params.get("access_token");
-  const state = params.get("state");
-  const storedToken = localStorage.getItem("auth_token");
-  const storedProvider = localStorage.getItem("auth_provider");
-
-  if (token && state === "discord") {
-    localStorage.setItem("auth_token", token);
-    localStorage.setItem("auth_provider", state);
-    fetchDiscordUser(token);
-  } else if (token && state === "google") {
-    localStorage.setItem("auth_token", token);
-    localStorage.setItem("auth_provider", state);
-    fetchGoogleUser(token);
-  } else if (storedToken && storedProvider === "discord") {
-    fetchDiscordUser(storedToken);
-  } else if (storedToken && storedProvider === "google") {
-    fetchGoogleUser(storedToken);
-  }
-}
-
-async function fetchDiscordUser(token) {
-  try {
-    const response = await fetch("https://discord.com/api/users/@me", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (!response.ok) throw new Error("فشل الحصول على بيانات المستخدم من ديسكورد");
-    const user = await response.json();
-    showStore({ username: user.username, discriminator: user.discriminator });
-  } catch (error) {
-    console.error(error);
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("auth_provider");
-  }
-}
-
-async function fetchGoogleUser(token) {
-  try {
-    const response = await fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if (!response.ok) throw new Error("فشل الحصول على بيانات المستخدم من جوجل");
-    const user = await response.json();
-    showStore({ username: user.name || user.email, discriminator: "جوجل" });
-  } catch (error) {
-    console.error(error);
-    localStorage.removeItem("auth_token");
-    localStorage.removeItem("auth_provider");
-  }
-}
-
 function showStore(user) {
   document.getElementById("loginPage").style.display = "none";
   document.getElementById("storePage").style.display = "block";
   if (user && user.username) {
-    document.getElementById("storeHeader").textContent = `مرحباً ${user.username}${user.discriminator ? ` (${user.discriminator})` : ""} - متجر SILVER LIFE`;
+    document.getElementById("storeHeader").textContent = `مرحباً ${user.username} - متجر SILVER LIFE`;
   }
 }
 
@@ -318,7 +219,7 @@ function login() {
   const user = document.getElementById("user").value;
   const pass = document.getElementById("pass").value;
   if (user && pass) {
-    showStore({ username: user, discriminator: "محلي" });
+    showStore({ username: user });
   } else {
     alert("دخل البيانات");
   }
