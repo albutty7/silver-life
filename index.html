@@ -6,163 +6,260 @@
 <title>SILVER LIFE</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial;
-  color: white;
+:root {
+  color-scheme: dark;
+  --bg: #040506;
+  --panel: rgba(12, 18, 30, 0.92);
+  --panel-soft: rgba(16, 22, 38, 0.88);
+  --border: rgba(196, 196, 196, 0.18);
+  --text: #f8fafc;
+  --muted: #9ca3af;
+  --silver: #cbd5e1;
+  --highlight: #9ca3ff;
+  --accent: #e2e8f0;
+  --glow: rgba(156, 163, 255, 0.22);
 }
 
-/* خلفية */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.08), transparent 20%),
+              radial-gradient(circle at bottom right, rgba(148, 163, 184, 0.05), transparent 24%),
+              linear-gradient(180deg, #030405 0%, #020205 38%, #05070c 100%);
+  color: var(--text);
+}
+
 body::before {
   content: "";
   position: fixed;
-  width: 100%;
-  height: 100%;
-  background: url("https://images.unsplash.com/photo-1511512578047-dfb367046420") no-repeat center center/cover;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.03), transparent 40%),
+              url("https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1400&q=80") center/cover no-repeat;
+  filter: saturate(0.6) brightness(0.25);
+  z-index: -2;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(156, 163, 255, 0.16), transparent 20%),
+              radial-gradient(circle at bottom left, rgba(148, 163, 184, 0.12), transparent 25%);
   z-index: -1;
-  filter: brightness(0.4);
 }
 
-/* تسجيل الدخول */
-.login {
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  height: 100vh;
+  gap: 16px;
+  padding: 20px 24px;
+  backdrop-filter: blur(24px);
+  background: rgba(6, 10, 18, 0.80);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
-.login-box {
-  background: rgba(0,0,0,0.8);
-  padding: 30px;
-  border-radius: 10px;
-  text-align: center;
-  width: 100%;
-  max-width: 420px;
+.site-brand {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-input {
-  display: block;
-  margin: 10px auto;
-  padding: 12px;
-  width: 90%;
-  max-width: 340px;
-  border: none;
-  border-radius: 8px;
+.site-brand h1 {
+  margin: 0;
+  font-size: 26px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
-button {
-  padding: 12px;
-  border: none;
-  background: #38bdf8;
-  cursor: pointer;
-  color: black;
+.site-brand p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.site-header a {
+  color: var(--highlight);
+  text-decoration: none;
   font-weight: 700;
-  border-radius: 8px;
-  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-button:hover {
+.hero {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 56px 24px 16px;
+  text-align: center;
+}
+
+.hero h2 {
+  margin: 0 auto 18px;
+  font-size: clamp(2.75rem, 4vw, 4.2rem);
+  line-height: 1.02;
+  letter-spacing: -1px;
+  text-shadow: 0 0 18px rgba(156, 163, 255, 0.25);
+}
+
+.hero p {
+  margin: 0 auto;
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.85;
+}
+
+.hero button {
+  margin-top: 30px;
+  padding: 16px 34px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(156, 163, 255, 0.98), rgba(241, 245, 249, 0.92));
+  color: #020617;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 800;
+  box-shadow: 0 18px 40px rgba(124, 140, 255, 0.2);
+}
+
+.hero button:hover {
   transform: translateY(-2px);
-  opacity: 0.95;
 }
 
-.note {
-  margin-top: 10px;
-  font-size: 13px;
-  color: #ccc;
-}
-
-/* المتجر */
 .store {
-  display: none;
-  padding-bottom: 40px;
+  display: block;
+  padding: 0 0 48px;
 }
 
 header {
   text-align: center;
-  padding: 24px;
-  font-size: 30px;
-  background: rgba(0, 0, 0, 0.85);
-}
-
-.container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 22px;
-  padding: 24px;
-}
-
-.product {
-  background: rgba(0,0,0,0.85);
-  padding: 20px;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-  text-align: center;
-}
-
-.product img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 14px;
-  margin-bottom: 14px;
-}
-
-.product h3 {
-  margin: 14px 0 10px;
-  font-size: 20px;
-}
-
-.product p {
-  color: #cbd5e1;
-  font-size: 14px;
-  line-height: 1.6;
-  margin: 0 0 16px;
-}
-
-.product button {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-}
-
-footer.support {
-  text-align: center;
-  padding: 18px 20px;
-  background: rgba(0,0,0,0.9);
-  color: #d1d5db;
-  font-size: 15px;
-}
-
-footer.support a {
-  color: #38bdf8;
-  text-decoration: none;
+  padding: 22px 24px 8px;
+  font-size: 34px;
+  letter-spacing: 0.5px;
+  color: var(--accent);
+  text-shadow: 0 0 20px rgba(148, 163, 184, 0.18);
 }
 
 .store-tagline {
   text-align: center;
-  color: #d1d5db;
-  margin-top: -10px;
-  margin-bottom: 18px;
-  font-size: 16px;
+  color: var(--muted);
+  margin-top: 6px;
+  margin-bottom: 28px;
+  font-size: 1rem;
 }
 
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+  padding: 0 24px;
+}
+
+.product {
+  background: rgba(10, 14, 28, 0.92);
+  padding: 28px;
+  border-radius: 28px;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  text-align: center;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product:hover {
+  transform: translateY(-10px);
+  border-color: rgba(148, 163, 184, 0.28);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
+}
+
+.product img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 22px;
+  margin-bottom: 22px;
+}
+
+.product h3 {
+  margin: 0 0 10px;
+  font-size: 1.3rem;
+  color: #f8fafc;
+}
+
+.product p {
+  color: var(--muted);
+  font-size: 0.97rem;
+  line-height: 1.8;
+  margin: 0 0 22px;
+}
+
+.product button {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(156, 163, 255, 0.98), rgba(226, 232, 240, 0.96));
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  color: #020617;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.product button:hover {
+  transform: translateY(-2px);
+  opacity: 0.96;
+}
+
+footer.support {
+  text-align: center;
+  padding: 28px 20px;
+  margin-top: 36px;
+  background: rgba(8, 12, 25, 0.94);
+  color: var(--muted);
+  font-size: 0.97rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+footer.support a {
+  color: var(--highlight);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@media (max-width: 740px) {
+  .site-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero {
+    padding: 40px 18px 16px;
+  }
+}
 </style>
 </head>
 
 <body>
-
-<!-- تسجيل الدخول -->
-<div class="login" id="loginPage">
-  <div class="login-box">
-    <h2>تسجيل الدخول</h2>
-    <input type="text" id="user" placeholder="اسم المستخدم">
-    <input type="password" id="pass" placeholder="كلمة المرور">
-    <button onclick="login()">دخول</button>
-    <div class="note">سجّل دخولك هنا ثم استمتع بالمتجر.</div>
+<div class="site-header">
+  <div class="site-brand">
+    <h1>SILVER LIFE</h1>
+    <p>متجر بطاقات الألعاب والخدمات الرقمية</p>
   </div>
+  <a href="https://wa.me/37457673" target="_blank">واتساب الدعم: 37457673</a>
 </div>
 
+<section class="hero">
+  <h2>تسوق بطاقات الألعاب وخدمات الديسكورد بأفضل تصميم</h2>
+  <p>اختر المنتج المناسب لك من متجر SILVER LIFE. راحة، سرعة، وأسعار منافسة في شحن البطاقات وخدمات البوتات.</p>
+  <button onclick="document.getElementById('storePage').scrollIntoView({ behavior: 'smooth' })">ابدأ الآن</button>
+</section>
 <!-- المتجر -->
 <div class="store" id="storePage">
 
@@ -171,30 +268,30 @@ footer.support a {
 <div class="container">
 
   <div class="product">
-    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968705.png">
+    <img src="https://images.unsplash.com/photo-1542751110-97427bbecf20?auto=format&fit=crop&w=800&q=80">
     <h3>ستور سوني</h3>
     <p>بطاقات سوني وأكواد PSN سهلة الشحن.</p>
     <button onclick="buy('ستور سوني')">طلب</button>
   </div>
 
   <div class="product">
-    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968613.png">
+    <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=800&q=80">
     <h3>بلايستيشن بلس</h3>
     <p>اشتراك PS Plus بأفضل الأسعار.</p>
     <button onclick="buy('بلايستيشن بلس')">طلب</button>
   </div>
 
   <div class="product">
-    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png">
+    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80">
     <h3>كردت دسكورد</h3>
-    <p>شحن رصيد ديسكورد لدفع المشتريات داخل التطبيق.</p>
+    <p>شحن رصيد ديسكورد ودعم عمليات الدفع داخل السيرفر.</p>
     <button onclick="buy('كردت دسكورد')">طلب</button>
   </div>
 
   <div class="product">
-    <img src="https://cdn-icons-png.flaticon.com/512/5968/5968756.png">
+    <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981a?auto=format&fit=crop&w=800&q=80">
     <h3>بوتات دسكورد</h3>
-    <p>خدمات تصميم بوتات ديسكورد احترافية.</p>
+    <p>خدمات تركيب بوتات ديسكورد وتهيئتها للسيرفر.</p>
     <button onclick="buy('بوتات دسكورد')">طلب</button>
   </div>
 
@@ -207,24 +304,6 @@ footer.support a {
 </footer>
 
 <script>
-function showStore(user) {
-  document.getElementById("loginPage").style.display = "none";
-  document.getElementById("storePage").style.display = "block";
-  if (user && user.username) {
-    document.getElementById("storeHeader").textContent = `مرحباً ${user.username} - متجر SILVER LIFE`;
-  }
-}
-
-function login() {
-  const user = document.getElementById("user").value;
-  const pass = document.getElementById("pass").value;
-  if (user && pass) {
-    showStore({ username: user });
-  } else {
-    alert("دخل البيانات");
-  }
-}
-
 function buy(product) {
   const phone = "37457673";
   const message = "مرحبا، ابي اطلب: " + product + " من SILVER LIFE";
